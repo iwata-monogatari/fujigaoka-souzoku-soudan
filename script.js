@@ -1,82 +1,71 @@
-/* 相続・空き家相談室 ─ インタラクション */
-
-// モバイルメニュー開閉
+/* 相続・空き家相談室 ― script.js */
 (function () {
-  var toggle = document.getElementById('navToggle');
-  var menu = document.getElementById('menu');
-  if (toggle && menu) {
-    toggle.addEventListener('click', function () {
-      menu.classList.toggle('open');
+  "use strict";
+
+  /* スマホ用ナビ開閉 */
+  var header = document.getElementById("header");
+  var toggle = document.getElementById("navToggle");
+  if (toggle && header) {
+    toggle.addEventListener("click", function () {
+      header.classList.toggle("open");
     });
-    menu.addEventListener('click', function (e) {
-      if (e.target.tagName === 'A') menu.classList.remove('open');
+    header.querySelectorAll(".nav a").forEach(function (a) {
+      a.addEventListener("click", function () {
+        header.classList.remove("open");
+      });
     });
   }
-})();
 
-// FAQ アコーディオン
-(function () {
-  var items = document.querySelectorAll('.faq__item');
-  items.forEach(function (item) {
-    var q = item.querySelector('.faq__q');
-    var a = item.querySelector('.faq__a');
-    if (!q || !a) return;
-    q.addEventListener('click', function () {
-      var isOpen = item.classList.contains('open');
-      // 単独開閉（他を閉じたい場合は下のループを有効化）
-      item.classList.toggle('open');
-      a.style.maxHeight = isOpen ? null : a.scrollHeight + 'px';
+  /* FAQ アコーディオン */
+  document.querySelectorAll(".faq-item").forEach(function (item) {
+    var q = item.querySelector(".faq-q");
+    if (!q) return;
+    q.addEventListener("click", function () {
+      item.classList.toggle("open");
+    });
+  });
+
+  /* スムーススクロール（固定ヘッダー分のオフセット補正） */
+  var headerH = 64;
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var id = link.getAttribute("href");
+      if (id === "#" || id.length < 2) return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      var top = target.getBoundingClientRect().top + window.pageYOffset - headerH + 1;
+      window.scrollTo({ top: top, behavior: "smooth" });
     });
   });
 })();
 
-// スクロール時のフェードイン
-(function () {
-  if (!('IntersectionObserver' in window)) return;
-  var targets = document.querySelectorAll('.step, .opt, .reason, .flow__item, .link-card, .worry');
-  targets.forEach(function (el) {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(16px)';
-    el.style.transition = 'opacity .5s ease, transform .5s ease';
-  });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'none';
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  targets.forEach(function (el) { io.observe(el); });
-})();
-
-// フォーム送信：入力内容をまとめてメール下書きを開く（静的サイト向け）
-// ※ 自動送信が必要なら Formspree 等のフォームサービスや Cloudflare の連携を設定してください。
-var CONTACT_EMAIL = 'fudosan.fujigaokas@gmail.com';
+/* フォーム送信：入力内容をまとめてメール下書きを開く（静的サイト向け）
+   ※ 自動送信が必要なら Formspree 等のフォームサービスをご利用ください。 */
+var CONTACT_EMAIL = "fudosan.fujigaokas@gmail.com";
 function handleSubmit(e) {
   e.preventDefault();
   var f = e.target;
-  function val(name) { var el = f.elements[name]; return el ? (el.value || '') : ''; }
+  function val(name) { var el = f.elements[name]; return el ? (el.value || "") : ""; }
   function multi(name) {
     var nodes = f.querySelectorAll('input[name="' + name + '"]:checked');
-    return Array.prototype.map.call(nodes, function (n) { return n.value; }).join('、');
+    return Array.prototype.map.call(nodes, function (n) { return n.value; }).join("、");
   }
   var lines = [
-    'お名前：' + val('name'),
-    '電話番号：' + val('tel'),
-    'メール：' + val('email'),
-    '不動産の所在地：' + val('address'),
-    '現在の状況：' + multi('status'),
-    '建物の有無：' + val('building'),
-    '荷物の有無：' + val('goods'),
-    '相談したい内容：' + val('message'),
-    '希望連絡方法：' + multi('contactway'),
-    '希望連絡時間帯：' + val('time'),
-    '添付予定資料：' + multi('docs')
+    "お名前：" + val("name"),
+    "電話番号：" + val("tel"),
+    "メール：" + val("email"),
+    "不動産の所在地：" + val("address"),
+    "現在の状況：" + multi("status"),
+    "建物の有無：" + val("building"),
+    "荷物の有無：" + val("goods"),
+    "相談したい内容：" + val("message"),
+    "希望連絡方法：" + multi("contactway"),
+    "希望連絡時間帯：" + val("time"),
+    "添付予定資料：" + multi("docs")
   ];
-  var body = encodeURIComponent(lines.join('\n'));
-  var subject = encodeURIComponent('【相続・空き家相談室】お問い合わせ');
-  window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + subject + '&body=' + body;
+  var body = encodeURIComponent(lines.join("\n"));
+  var subject = encodeURIComponent("【相続・空き家相談室】お問い合わせ");
+  window.location.href = "mailto:" + CONTACT_EMAIL + "?subject=" + subject + "&body=" + body;
   return false;
 }
