@@ -79,10 +79,19 @@ figcaption { padding: 12px 14px; color: var(--muted); font-size: .86rem; backgro
 .contact-grid { display: grid; grid-template-columns: 1fr .75fr; gap: 36px; align-items: center; }
 .contact-card { margin-top: 0; padding: 28px; border-radius: var(--radius); background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); }
 .contact-card .btn { width: 100%; }
-.site-footer { padding: 28px 0; background: #1d2d39; color: rgba(255,255,255,.8); }
-.footer-grid { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-.footer-grid p { margin: 0; }
-.footer-grid a { color: #fff; }
+.site-footer { padding: 34px 0; background: #1d2d39; color: rgba(255,255,255,.8); }
+.footer-content { display: grid; gap: 24px; }
+.footer-brand { color: rgba(255,255,255,.86); }
+.footer-brand b { color: #fff; }
+.footer-links { border-top: 1px solid rgba(255,255,255,.14); padding-top: 22px; }
+.footer-heading { margin: 0 0 14px; color: #d6c18f; font-size: .86rem; font-weight: 800; letter-spacing: .08em; }
+.footer-links ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 18px; margin: 0; padding: 0; list-style: none; }
+.footer-links a { display: block; color: #fff; text-decoration: none; font-weight: 800; line-height: 1.5; }
+.footer-links a span { display: block; margin-top: 2px; color: rgba(255,255,255,.62); font-size: .82rem; font-weight: 500; }
+.footer-links a:hover { color: #f5df9e; }
+.footer-sns-heading { margin-top: 22px; margin-bottom: 0; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.14); padding-top: 18px; color: rgba(255,255,255,.62); font-size: .86rem; }
+.footer-bottom a { color: rgba(255,255,255,.82); }
 @media (max-width: 860px) {
   .nav { min-height: 62px; }
   .nav-toggle { display: block; }
@@ -90,6 +99,7 @@ figcaption { padding: 12px 14px; color: var(--muted); font-size: .86rem; backgro
   .menu.open { display: flex; }
   .hero { padding-top: 46px; }
   .hero-grid, .compare-grid, .step-grid, .photo-grid, .profile, .contact-grid { grid-template-columns: 1fr; }
+  .footer-links ul { grid-template-columns: 1fr; }
   .hero-photo img { aspect-ratio: 16 / 11; }
   .profile img { width: min(240px, 70vw); }
 }

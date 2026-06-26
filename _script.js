@@ -39,7 +39,7 @@
   }, { threshold: 0.12 });
   targets.forEach(function (el) { io.observe(el); });
 })();
-var CONTACT_EMAIL = 'fudosan.fujigaokas@gmail.com';
+var CONTACT_EMAIL = 'fudosan@fujigaoka-service.co.jp';
 function handleSubmit(e) {
   e.preventDefault();
   var f = e.target;
